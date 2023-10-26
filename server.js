@@ -1,15 +1,23 @@
 const crypto = require('crypto');
 const express = require('express');
 const api = require('./routes/api');
+const csrf = require('./routes/csrf');
 
 const app = express();
 const port = 3000;
 
 app.set('view engine', 'ejs');
 
-app.use(express.static('public'));
+app.use(
+  express.static('public', {
+    setHeaders: (res, path, stat) => {
+      res.header('X-Frame-Options', 'SAMEORIGIN');
+    },
+  })
+);
 
 app.use('/api', api);
+app.use('/csrf', csrf);
 
 app.get('/', (req, res, next) => {
   res.end('Top Page');
@@ -26,6 +34,13 @@ app.get('/csp', (req, res, next) => {
       "require-trusted-types-for 'script'"
   );
   res.render('csp', { nonce: nonceValue });
+});
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/signup', (req, res) => {
+  console.log(req.body);
+  res.send('アカウント登録しました');
 });
 
 // サーバー起動
